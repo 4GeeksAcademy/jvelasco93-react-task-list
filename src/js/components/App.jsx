@@ -23,13 +23,18 @@ export default function App() {
       <h1>todo</h1>
       <TaskInput onAddTask={handleAddTask} />
       {tasks.length === 0 ? (
-        <p>No tasks yet</p>
+        <p>No task, add a task</p>
       ) : (
-        <ul>
-          {tasks.map((task) => (
-            <TaskItem key={task.id} task={task} onDelete={handleDeleteTask} />
-          ))}
-        </ul>
+        <>
+          <ul>
+            {tasks.map((task) => (
+              <TaskItem key={task.id} task={task} onDelete={handleDeleteTask} />
+            ))}
+          </ul>
+          <p>
+            {tasks.length} item{tasks.length !== 1 ? "s" : ""} left
+          </p>
+        </>
       )}
     </>
   );
@@ -56,12 +61,17 @@ function TaskInput({ onAddTask }) {
   }
 
   return (
-    <input
-      type="text"
-      value={value}
-      onChange={handleChange}
-      onKeyDown={handleKeyDown}
-    />
+    <>
+      <input
+        type="text"
+        value={value}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+      />
+      <button type="button" onClick={submit} disabled>
+        Add task
+      </button>
+    </>
   );
 }
 
