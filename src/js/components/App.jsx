@@ -1,10 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 
+export default function App() {
+  const [tasks, setTasks] = useState([]);
 
+  function handleAddTask(description) {
+    if (!description.trim()) return;
+    setTasks((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        description: description.trim(),
+      },
+    ]);
+  }
 
-export default function App()  {
-	return (
-		<div>Hello World</div>
-	);
-};
+  function handleDeleteTask(id) {
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+  }
 
+  return (
+    <>
+      <h1>todo</h1>
+      <TaskInput onAddTask={handleAddTask} />
+      {tasks.length === 0 ? (
+        <p>No tasks yet</p>
+      ) : (
+        <ul>
+          {tasks.map((task) => (
+            <TaskItem key={task.id} task={task} onDelete={handleDeleteTask} />
+          ))}
+        </ul>
+      )}
+    </>
+  );
+}
+
+function TaskInput({ onAddTask }) {
+  const [value, setValue] = useState("");
+
+  function handleChange(e) {
+    setValue(e.target.value);
+  }
+
+  function submit() {
+    const trimmed = value.trim();
+    if (!trimmed) return;
+    onAddTask(trimmed);
+    setValue("");
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      submit();
+    }
+  }
+
+  return (
+    <input
+      type="text"
+      value={value}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+    />
+  );
+}
+
+function TaskItem({ task, onDelete }) {
+  return (
+    <li className="task-item">
+      <span>{task.description}</span>
+      <button type="button" onClick={() => onDelete(task.id)}>
+        X
+      </button>
+    </li>
+  );
+}

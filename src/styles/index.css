@@ -1,0 +1,7 @@
+.task-item button {
+  opacity: 0;
+}
+
+.task-item:hover button {
+  opacity: 1;
+}
