@@ -113,7 +113,7 @@ function TaskList({ tasks, onDelete }) {
 
 function TaskItem({ task, onDelete }) {
   return (
-    <li className="list-group-item d-flex align-items-center justify-content-between">
+    <li className="task-item list-group-item d-flex align-items-center justify-content-between">
       <span className="me-auto">{task.description}</span>
       <button
         type="button"
