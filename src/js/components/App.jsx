@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { TodoCard } from "./TodoCard";
 import { TaskInput } from "./TaskInput";
 import { TaskList } from "./TaskList";
 
@@ -19,11 +18,14 @@ export default function App() {
   }
 
   return (
-    <div>
-      <TodoCard>
+    <main>
+      <header>
+        <h1>todos</h1>
+      </header>
+      <section>
         <TaskInput onAddTask={handleAddTask} />
         <TaskList tasks={tasks} onDelete={handleDeleteTask} />
-      </TodoCard>
-    </div>
+      </section>
+    </main>
   );
 }

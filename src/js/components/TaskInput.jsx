@@ -10,10 +10,6 @@ export function TaskInput({ onAddTask }) {
     setValue(e.target.value);
   }
 
-  function handleKeyDown(e) {
-    if (e.key === "Enter") submit();
-  }
-
   function submit() {
     if (isEmpty) return;
     onAddTask(value.trim());
@@ -22,20 +18,24 @@ export function TaskInput({ onAddTask }) {
   }
 
   return (
-    <div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        submit();
+      }}
+    >
       <input
         ref={inputRef}
         type="text"
         value={value}
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
         className="text-input"
         placeholder="New task..."
         autoFocus
       />
-      <button type="button" onClick={submit} disabled={isEmpty}>
+      <button type="submit" disabled={isEmpty}>
         Add
       </button>
-    </div>
+    </form>
   );
 }
