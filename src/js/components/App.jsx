@@ -19,7 +19,7 @@ export default function App() {
   }
 
   return (
-    <div className="container d-flex flex-column align-items-center mt-3">
+    <div>
       <TodoCard>
         <TaskInput onAddTask={handleAddTask} />
         <TaskList tasks={tasks} onDelete={handleDeleteTask} />

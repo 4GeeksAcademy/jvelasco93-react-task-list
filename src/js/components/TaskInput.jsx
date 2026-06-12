@@ -22,23 +22,18 @@ export function TaskInput({ onAddTask }) {
   }
 
   return (
-    <div className="d-flex gap-2 mb-3">
+    <div>
       <input
         ref={inputRef}
         type="text"
         value={value}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        className="form-control text-input"
+        className="text-input"
         placeholder="New task..."
         autoFocus
       />
-      <button
-        type="button"
-        onClick={submit}
-        disabled={isEmpty}
-        className="btn btn-outline-secondary"
-      >
+      <button type="button" onClick={submit} disabled={isEmpty}>
         Add
       </button>
     </div>
