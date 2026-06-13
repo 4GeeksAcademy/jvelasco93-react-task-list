@@ -10,7 +10,8 @@ export function TaskInput({ onAddTask }) {
     setValue(e.target.value);
   }
 
-  function submit() {
+  function handleSubmit(event) {
+    event.preventDefault();
     if (isEmpty) return;
     onAddTask(value.trim());
     setValue("");
@@ -18,12 +19,7 @@ export function TaskInput({ onAddTask }) {
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        submit();
-      }}
-    >
+    <form onSubmit={handleSubmit}>
       <input
         ref={inputRef}
         type="text"

@@ -1,32 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TaskInput } from "./TaskInput";
 import { TaskList } from "./TaskList";
+import { taskService } from "../services/taskService";
 
-const taskService = {
-  addTask(description) {
-    if (!description.trim()) return null;
-    return {
-      id: crypto.randomUUID(),
-      description: description.trim(),
-    };
-  },
-
-  deleteTask(tasks, id) {
-    return tasks.filter((task) => task.id !== id);
-  },
-};
 export default function App() {
   const [tasks, setTasks] = useState([]);
 
-  function handleAddTask(description) {
-    const newTask = taskService.addTask(description);
-    if (newTask) {
-      setTasks((prev) => [...prev, newTask]);
+  async function loadTasks(signal) {
+    try {
+      const items = await taskService.loadTasks(undefined, { signal });
+      setTasks(items);
+    } catch (error) {
+      if (error.name === "AbortError") return;
+      console.error("Error cargando tareas:", error.name);
     }
   }
 
-  function handleDeleteTask(id) {
-    setTasks(taskService.deleteTask(tasks, id));
+  useEffect(() => {
+    const controller = new AbortController();
+    loadTasks(controller.signal);
+    return () => controller.abort();
+  }, []);
+
+  async function handleAddTask(description) {
+    await taskService.addTask(description);
+    await loadTasks();
+  }
+
+  async function handleDeleteTask(id) {
+    await taskService.deleteTask(id);
+    await loadTasks();
+  }
+
+  async function handleDeleteAllTasks() {
+    await taskService.deleteAllTasks(tasks);
+    await loadTasks();
   }
 
   return (
@@ -36,7 +44,11 @@ export default function App() {
       </header>
       <section>
         <TaskInput onAddTask={handleAddTask} />
-        <TaskList tasks={tasks} onDelete={handleDeleteTask} />
+        <TaskList
+          tasks={tasks}
+          onDelete={handleDeleteTask}
+          onDeleteAll={handleDeleteAllTasks}
+        />
       </section>
     </main>
   );

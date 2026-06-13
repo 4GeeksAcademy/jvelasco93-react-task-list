@@ -1,6 +1,6 @@
 import React from "react";
 
-export function TaskList({ tasks, onDelete }) {
+export function TaskList({ tasks, onDelete, onDeleteAll }) {
   if (tasks.length === 0) {
     return <p>No tasks yet — add one above</p>;
   }
@@ -12,9 +12,14 @@ export function TaskList({ tasks, onDelete }) {
           <TaskItem key={task.id} task={task} onDelete={onDelete} />
         ))}
       </ul>
-      <small>
-        {tasks.length} item{tasks.length !== 1 ? "s" : ""} left
-      </small>
+      <footer>
+        <small>
+          {tasks.length} item{tasks.length !== 1 ? "s" : ""} left
+        </small>
+        <button type="button" onClick={onDeleteAll}>
+          Clear all
+        </button>
+      </footer>
     </section>
   );
 }
